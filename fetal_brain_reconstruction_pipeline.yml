@@ -1,20 +1,37 @@
-name: "Automatic Fetal Brain Reconstruction Pipeline v1.0.0"
+name: "Automatic Fetal Brain Reconstruction Pipeline v1.1.0 20231114-1"
 authors: "Jennings Zhang <Jennings.Zhang@childrens.harvard.edu>"
 category: "MRI"
-description: "Automatic fetal brain reconstruction pipeline developed by Kiho's group at the FNNDSC. Features machine-learning based brain masking and quality assessment."
-locked: false
+description: "Automatic fetal brain reconstruction pipeline using machine learning developed by Kiho's group at the FNNDSC."
+locked: true
 plugin_tree:
-- title: "Brain Mask"
-  plugin: pl-fetal-brain-mask v1.2.1
+- title: "Unstack folders"
+  plugin: pl-unstack-folders v1.0.0
   previous: null
-- title: "N4 Bias Field Correction"
-  plugin: pl-ANTs_N4BiasFieldCorrection v0.2.7.2
-  previous: "Brain Mask"
+
+- title: "Brain Mask"
+  plugin: pl-emerald v0.2.0
+  previous: "Unstack folders"
   plugin_parameter_defaults:
-    inputPathFilter: "extracted/0.0/*.nii"
+    mask_suffix: _mask.nii
+    outputs: '0.0:_brain.nii,0.2:_overlay02.nii'
+- title: "Select brain extraction"
+  previous: "Brain Mask"
+  plugin: pl-bulk-rename v0.1.2
+  plugin_parameter_defaults:
+    filter: ".*_brain\\.nii$"
+    expression: "(.*)_brain\\.nii"
+    replacement: "$1.nii"
+- title: "N4 Bias Field Correction"
+  plugin: pl-ANTs_N4BiasFieldCorrection v0.2.7.3
+  previous: "Select brain extraction"
 - title: "Automatic Fetal Brain Assessment"
-  plugin: pl-fetal-brain-assessment v1.3.0
+  plugin: pl-fetal-brain-assessment v1.3.1
   previous: "N4 Bias Field Correction"
-- title: "IRTK Reconstruction"
-  plugin: pl-irtk-reconstruction v1.1.0
+- title: "Reconstruction"
+  plugin: pl-NeSVoR-reconstruct v0.5.0
   previous: "Automatic Fetal Brain Assessment"
+
+  # optional
+- title: "Brain extraction preview figures"
+  plugin: pl-mri-preview v1.2.2
+  previous: "Brain Mask"
