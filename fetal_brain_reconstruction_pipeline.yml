@@ -1,4 +1,4 @@
-name: "Automatic Fetal Brain Reconstruction Pipeline v1.1.0 20231114-1"
+name: "Automatic Fetal Brain Reconstruction Pipeline v1.2.2"
 authors: "Jennings Zhang <Jennings.Zhang@childrens.harvard.edu>"
 category: "MRI"
 description: "Automatic fetal brain reconstruction pipeline using machine learning developed by Kiho's group at the FNNDSC."
@@ -8,9 +8,14 @@ plugin_tree:
   plugin: pl-unstack-folders v1.0.0
   previous: null
 
-- title: "Brain Mask"
-  plugin: pl-emerald v0.2.0
+- title: "Convert DICOM to NIFTI"
+  plugin: pl-dcm2niix v1.0.0
   previous: "Unstack folders"
+  plugin_parameter_defaults:
+    b: n  # no BIDS sidecar
+- title: "Brain Mask"
+  plugin: pl-emerald v0.2.2
+  previous: "Convert DICOM to NIFTI"
   plugin_parameter_defaults:
     mask_suffix: _mask.nii
     outputs: '0.0:_brain.nii,0.2:_overlay02.nii'
@@ -22,7 +27,9 @@ plugin_tree:
     expression: "(.*)_brain\\.nii"
     replacement: "$1.nii"
 - title: "N4 Bias Field Correction"
-  plugin: pl-ANTs_N4BiasFieldCorrection v0.2.7.3
+  plugin: pl-n4biasfieldcorrection v2.5.0.1
+  plugin_parameter_defaults:
+    convergence: "[400x400x400,0.00]"
   previous: "Select brain extraction"
 - title: "Automatic Fetal Brain Assessment"
   plugin: pl-fetal-brain-assessment v1.3.1
@@ -35,3 +42,6 @@ plugin_tree:
 - title: "Brain extraction preview figures"
   plugin: pl-mri-preview v1.2.2
   previous: "Brain Mask"
+- title: "Brain reconstruction preview figures"
+  plugin: pl-mri-preview v1.2.2
+  previous: "Reconstruction"
