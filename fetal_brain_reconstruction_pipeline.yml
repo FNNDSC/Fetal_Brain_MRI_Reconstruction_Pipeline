@@ -1,4 +1,4 @@
-name: "Automatic Fetal Brain Reconstruction Pipeline v1.2.2"
+name: "Automatic Fetal Brain Reconstruction Pipeline v1.2.3"
 authors: "Jennings Zhang <Jennings.Zhang@childrens.harvard.edu>"
 category: "MRI"
 description: "Automatic fetal brain reconstruction pipeline using machine learning developed by Kiho's group at the FNNDSC."
@@ -37,11 +37,3 @@ plugin_tree:
 - title: "Reconstruction"
   plugin: pl-NeSVoR-reconstruct v0.5.0
   previous: "Automatic Fetal Brain Assessment"
-
-  # optional
-- title: "Brain extraction preview figures"
-  plugin: pl-mri-preview v1.2.2
-  previous: "Brain Mask"
-- title: "Brain reconstruction preview figures"
-  plugin: pl-mri-preview v1.2.2
-  previous: "Reconstruction"
