@@ -27,7 +27,7 @@ plugin_tree:
     expression: "(.*)_brain\\.nii"
     replacement: "$1.nii"
 - title: "N4 Bias Field Correction"
-  plugin: pl-n4biasfieldcorrection v2.5.0.1
+  plugin: pl-n4biasfieldcorrection v2.5.3.0
   plugin_parameter_defaults:
     convergence: "[400x400x400,0.00]"
   previous: "Select brain extraction"
