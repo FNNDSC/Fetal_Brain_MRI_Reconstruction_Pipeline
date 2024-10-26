@@ -14,7 +14,7 @@ plugin_tree:
   plugin_parameter_defaults:
     b: n  # no BIDS sidecar
 - title: "Brain Mask"
-  plugin: pl-emerald v0.2.2
+  plugin: pl-emerald v0.3.1
   previous: "Convert DICOM to NIFTI"
   plugin_parameter_defaults:
     mask_suffix: _mask.nii
